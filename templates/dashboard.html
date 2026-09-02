@@ -1,0 +1,1781 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard - CareerCompass</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+            min-height: 100vh;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-user {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .logout-btn {
+            text-decoration: none;
+            color: #374151;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 9px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            transition: 0.2s ease;
+        }
+
+        .logout-btn:hover {
+            background: #f3f4f6;
+        }
+
+        .profile-btn {
+            text-decoration: none;
+            color: inherit;
+            font-weight: 500;
+            margin-right: 10px;
+        }
+
+        .profile-btn:hover{
+            background:#f3f4f6;
+        }
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+
+        .dashboard-container {
+            width: 88%;
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 40px 0 60px;
+        }
+
+        /* =========================
+           WELCOME SECTION
+        ========================= */
+
+        .welcome-section {
+            margin-bottom: 30px;
+        }
+
+        .welcome-section h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+            color: #111827;
+        }
+
+        .welcome-section p {
+            color: #6b7280;
+            font-size: 15px;
+        }
+
+        /* =========================
+           SUMMARY CARDS
+        ========================= */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .card-label {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-value {
+            font-size: 30px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .card-subtext {
+            margin-top: 7px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        /* =========================
+           READINESS
+        ========================= */
+
+        .readiness-value {
+            color: #2563eb;
+        }
+
+        /* =========================
+           CONTENT GRID
+        ========================= */
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .chart-header {
+            margin-bottom: 20px;
+        }
+
+        .chart-header h2 {
+            font-size: 19px;
+            color: #111827;
+            margin-bottom: 6px;
+        }
+
+        .chart-header p {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 350px;
+        }
+
+        /* =========================
+           ASSESSMENT CARD
+        ========================= */
+
+        .assessment-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            margin-bottom: 30px;
+        }
+
+        .assessment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .assessment-header h2 {
+            font-size: 20px;
+            color: #111827;
+        }
+
+        .assessment-id {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .assessment-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .detail-box {
+            background: #f9fafb;
+            border-radius: 10px;
+            padding: 16px;
+        }
+
+        .detail-label {
+            display: block;
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 6px;
+        }
+
+        .detail-value {
+            font-size: 17px;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        /* =========================
+           READINESS BADGE
+        ========================= */
+
+        .readiness-badge {
+            display: inline-block;
+            padding: 7px 13px;
+            border-radius: 20px;
+            background: #eff6ff;
+            color: #2563eb;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .readiness-high {
+            background: #ecfdf5;
+            color: #15803d;
+        }
+
+        .readiness-moderate {
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
+        .readiness-developing {
+            background: #fffbeb;
+            color: #b45309;
+        }
+
+        .readiness-early {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .primary-btn,
+        .secondary-btn {
+            display: inline-block;
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .primary-btn {
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+        .primary-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .secondary-btn {
+            background: #ffffff;
+            color: #2563eb;
+            border: 1px solid #2563eb;
+        }
+
+        .secondary-btn:hover {
+            background: #eff6ff;
+        }
+
+        /* =========================
+           EMPTY STATE
+        ========================= */
+
+        .empty-state {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 45px 30px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .empty-state h2 {
+            margin-bottom: 10px;
+            color: #111827;
+        }
+
+        .empty-state p {
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+        /* =========================
+           SKILL SUMMARY
+        ========================= */
+
+        .skill-summary {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .summary-header {
+            margin-bottom: 20px;
+        }
+
+        .summary-header h2 {
+            font-size: 19px;
+            color: #111827;
+            margin-bottom: 6px;
+        }
+
+        .summary-header p {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .skill-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .skill-summary-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 18px;
+            border-radius: 10px;
+        }
+
+        .strong-card {
+            background: #ecfdf5;
+        }
+
+        .developing-card {
+            background: #fffbeb;
+        }
+
+        .improvement-card {
+            background: #fef2f2;
+        }
+
+        .summary-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 17px;
+            background: #ffffff;
+        }
+
+        .summary-number {
+            display: block;
+            font-size: 22px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .summary-label {
+            display: block;
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+        /* =========================
+           RESPONSIVE DESIGN
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .assessment-details {
+                grid-template-columns: 1fr;
+            }
+            .skill-summary-grid{
+                grid-template-columns:1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .nav-user {
+                display: none;
+            }
+
+            .dashboard-container {
+                width: 92%;
+                padding-top: 30px;
+            }
+
+            .welcome-section h1 {
+                font-size: 26px;
+            }
+
+            .card-value {
+                font-size: 26px;
+            }
+
+            .chart-container {
+                height: 280px;
+            }
+
+            .assessment-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+        }
+
+        /* =========================
+        ML PLACEMENT PREDICTION
+        ========================= */
+
+        .ml-prediction-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 28px 30px;
+            margin: 24px 0;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+        }
+
+        .ml-prediction-header {
+            margin-bottom: 22px;
+        }
+
+        .ml-prediction-header h2 {
+            margin: 0 0 6px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #172554;
+        }
+
+        .ml-prediction-header p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .ml-prediction-content {
+            display: flex;
+            align-items: center;
+            gap: 45px;
+            padding: 22px 0;
+        }
+
+        .ml-probability {
+            min-width: 180px;
+            text-align: center;
+            padding: 20px;
+            border-radius: 16px;
+            background: #eff6ff;
+        }
+
+        .ml-probability-value {
+            display: block;
+            font-size: 38px;
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        .ml-probability-label {
+            display: block;
+            margin-top: 5px;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .ml-result {
+            flex: 1;
+        }
+
+        .ml-result-badge {
+            display: inline-block;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .ml-result-positive {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .ml-result-negative {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .ml-result p {
+            margin: 0;
+            max-width: 650px;
+            line-height: 1.6;
+            color: #475569;
+            font-size: 14px;
+        }
+
+        .ml-note {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 16px;
+            margin-top: 8px;
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .ml-note strong {
+            color: #334155;
+        }
+
+        .ml-empty {
+            padding: 18px;
+            background: #f8fafc;
+            border-radius: 12px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+
+        /* =========================
+        MOBILE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            .ml-prediction-content {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 20px;
+            }
+
+            .ml-probability {
+                width: auto;
+            }
+
+            .ml-prediction-card {
+                padding: 22px;
+            }
+
+                .recommendation-top {
+                    flex-direction: column;
+                    gap: 10px;
+                }
+
+                .recommendation-gap {
+                    text-align: left;
+                }
+
+        }
+
+        /* =========================
+        ML INSIGHTS
+        ========================= */
+
+        .ml-insights {
+            border-top: 1px solid #e5e7eb;
+            margin-top: 24px;
+            padding-top: 24px;
+        }
+
+        .ml-insights h3 {
+            margin: 0 0 14px;
+            font-size: 17px;
+            color: #172554;
+        }
+
+        .ml-strength-title {
+            margin-top: 26px !important;
+        }
+
+        .ml-insight-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .ml-insight-item {
+            padding: 12px 15px;
+            border-radius: 10px;
+        }
+
+        .ml-insight-item > div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .ml-insight-item strong {
+            font-size: 14px;
+        }
+
+        .ml-insight-item span {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .focus-item {
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+        }
+
+        .focus-item strong {
+            color: #9a3412;
+        }
+
+        .focus-item span {
+            color: #c2410c;
+        }
+
+        .strength-item {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+        }
+
+        .strength-item strong {
+            color: #166534;
+        }
+
+        .strength-item span {
+            color: #15803d;
+        }
+
+        .ml-no-insights {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* =========================
+        PERSONALIZED RECOMMENDATIONS
+        ========================= */
+
+        .recommendations-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .recommendations-header {
+            margin-bottom: 20px;
+        }
+
+        .recommendations-header h2 {
+            font-size: 19px;
+            color: #111827;
+            margin-bottom: 6px;
+        }
+
+        .recommendations-header p {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .recommendations-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .recommendation-item {
+            padding: 18px;
+            border-radius: 10px;
+            border: 1px solid;
+        }
+
+        .recommendation-high {
+            background: #fff7ed;
+            border-color: #fed7aa;
+        }
+
+        .recommendation-medium {
+            background: #fffbeb;
+            border-color: #fde68a;
+        }
+
+        .recommendation-low {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .recommendation-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .recommendation-top h3 {
+            margin: 0 0 7px;
+            font-size: 15px;
+            color: #111827;
+        }
+
+        .recommendation-priority {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 9px;
+            border-radius: 999px;
+            text-transform: uppercase;
+        }
+
+        .recommendation-high .recommendation-priority {
+            background: #ffedd5;
+            color: #c2410c;
+        }
+
+        .recommendation-medium .recommendation-priority {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .recommendation-low .recommendation-priority {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        .recommendation-gap {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2563eb;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .recommendation-gap span {
+            display: block;
+            margin-top: 2px;
+            font-size: 11px;
+            font-weight: 400;
+            color: #64748b;
+        }
+
+        .recommendation-text {
+            margin: 14px 0 10px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #475569;
+        }
+
+        .recommendation-meta {
+            font-size: 12px;
+            color: #64748b;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         NAVIGATION BAR
+    ========================= -->
+
+    <nav class="navbar">
+
+        <a href="{{ url_for('auth.dashboard') }}" class="brand">
+            CareerCompass
+        </a>
+
+        <div class="nav-right">
+
+            <span class="nav-user">
+                {{ user_name }}
+            </span>
+            <a href="{{url_for('auth.profile')}}" class="profile-btn">
+                Profile
+            </a>
+            <a href="{{ url_for('auth.logout') }}" class="logout-btn">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =========================
+         MAIN DASHBOARD
+    ========================= -->
+
+    <main class="dashboard-container">
+
+        <!-- Welcome -->
+
+        <section class="welcome-section">
+
+            <h1>Welcome, {{ user_name }} 👋</h1>
+
+            <p>
+                Track your placement readiness and improve your data analysis skills.
+            </p>
+
+        </section>
+
+
+        {% if latest_assessment %}
+
+        <!-- =========================
+             SUMMARY CARDS
+        ========================= -->
+
+        <section class="summary-grid">
+
+            <div class="summary-card">
+
+                <div class="card-label">
+                    Overall Score
+                </div>
+
+                <div class="card-value">
+                    {{ percentage }}%
+                </div>
+
+                <div class="card-subtext">
+                    Latest assessment performance
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="card-label">
+                    Placement Readiness
+                </div>
+
+                <div class="card-value readiness-value">
+                    {{ readiness_level }}
+                </div>
+
+                <div class="card-subtext">
+                    Based on your latest assessment
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="card-label">
+                    Latest Assessment
+                </div>
+
+                <div class="card-value">
+                    #{{ latest_assessment.assessment_id }}
+                </div>
+
+                <div class="card-subtext">
+                    {{ latest_assessment.total_score }} /
+                    {{ total_questions }} correct
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =========================
+             ML PLACEMENT PREDICTION
+        ========================= -->
+
+        <section class="ml-prediction-card">
+
+            <div class="ml-prediction-header">
+
+                <div>
+                    <h2>🤖 ML Placement Prediction</h2>
+
+                    <p>
+                        Prediction based on your profile, skills,
+                        and improvement trend.
+                    </p>
+                </div>
+
+            </div>
+
+
+            {% if ml_probability is not none %}
+
+            <div class="ml-prediction-content">
+
+                <div class="ml-probability">
+
+                    <span class="ml-probability-value">
+                        {{ ml_probability }}%
+                    </span>
+
+                    <span class="ml-probability-label">
+                        Placement Probability
+                    </span>
+
+                </div>
+
+
+                <div class="ml-result">
+
+                    {% if ml_prediction == 1 %}
+
+                    <span class="ml-result-badge ml-result-positive">
+                        Likely to be Placed
+                    </span>
+
+                    <p>
+                        Based on the information currently available,
+                        the ML model predicts a positive placement outcome.
+                    </p>
+
+                    {% else %}
+
+                    <span class="ml-result-badge ml-result-negative">
+                        Needs More Preparation
+                    </span>
+
+                    <p>
+                        The ML model currently predicts that additional
+                        preparation may be beneficial before placement.
+                    </p>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <div class="ml-note">
+                <strong>Note:</strong>
+                This is an ML-based prediction and is different from
+                your CareerCompass Placement Readiness score.
+            </div>
+
+            <div class="ml-insights">
+
+                <h3>What to Focus On</h3>
+
+                {% if ml_insights.focus_areas %}
+
+                    <div class="ml-insight-list">
+
+                        {% for item in ml_insights.focus_areas %}
+
+                            <div class="ml-insight-item focus-item">
+
+                                <div>
+                                    <strong>{{ item.name }}</strong>
+                                    <span>{{ item.value }}</span>
+                                </div>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <p class="ml-no-insights">
+                        No major focus areas identified.
+                    </p>
+
+                {% endif %}
+
+
+                <h3 class="ml-strength-title">
+                    Current Strengths
+                </h3>
+
+                {% if ml_insights.strengths %}
+
+                    <div class="ml-insight-list">
+
+                        {% for item in ml_insights.strengths %}
+
+                            <div class="ml-insight-item strength-item">
+
+                                <div>
+                                    <strong>{{ item.name }}</strong>
+                                    <span>{{ item.value }}</span>
+                                </div>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <p class="ml-no-insights">
+                        Continue completing assessments to identify
+                        your strongest areas.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+            {% else %}
+
+            <div class="ml-empty">
+                <p>
+                    Complete your profile and an assessment to receive
+                    an ML placement prediction.
+                </p>
+            </div>
+
+            {% endif %}
+
+        </section>
+
+        <!-- =========================
+        PERSONALIZED RECOMMENDATIONS
+        ========================= -->
+
+        {% if recommendations %}
+
+        <section class="recommendations-card">
+
+            <div class="recommendations-header">
+
+                <h2>🎯 Personalized Recommendations</h2>
+
+                <p>
+                    Based on your latest assessment, these are the areas
+                    you should prioritize for improvement.
+                </p>
+
+            </div>
+
+
+            <div class="recommendations-list">
+
+                {% for item in recommendations %}
+
+                <div class="recommendation-item
+                    {% if item.student_priority == 'High' %}
+                        recommendation-high
+                    {% elif item.student_priority == 'Medium' %}
+                        recommendation-medium
+                    {% else %}
+                        recommendation-low
+                    {% endif %}
+                ">
+
+                    <div class="recommendation-top">
+
+                        <div>
+
+                            <h3>
+                                {{ item.topic }}
+                            </h3>
+
+                            <span class="recommendation-priority">
+                                {{ item.student_priority }} Priority
+                            </span>
+
+                        </div>
+
+                        <div class="recommendation-gap">
+
+                            {{ item.skill_gap }}%
+                            <span>skill gap</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <p class="recommendation-text">
+                        {{ item.recommendation_text }}
+                    </p>
+
+
+                    <div class="recommendation-meta">
+
+                        <span>
+                            {{ item.mistakes }} mistake{% if item.mistakes != 1 %}s{% endif %}
+                        </span>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+        {% endif %}
+
+        <!-- =========================
+             LATEST ASSESSMENT
+        ========================= -->
+
+        <section class="assessment-card">
+
+            <div class="assessment-header">
+
+                <h2>Latest Assessment</h2>
+
+                <span class="assessment-id">
+                    Assessment #{{ latest_assessment.assessment_id }}
+                </span>
+
+            </div>
+
+
+            <div class="assessment-details">
+
+                <div class="detail-box">
+
+                    <span class="detail-label">
+                        Score
+                    </span>
+
+                    <span class="detail-value">
+                        {{ latest_assessment.total_score }}
+                        /
+                        {{ total_questions }}
+                    </span>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span class="detail-label">
+                        Performance
+                    </span>
+
+                    <span class="detail-value">
+                        {{ percentage }}%
+                    </span>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span class="detail-label">
+                        Readiness
+                    </span>
+
+                    <span class="readiness-badge {% if readiness_level == 'Highly Ready' %}readiness-high{% elif readiness_level == 'Moderately Ready' %}readiness-moderate{% elif readiness_level == 'Developing' %}readiness-developing{% else %}readiness-early{% endif %}">
+                        {{ readiness_level }}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="actions">
+
+                <a
+                    href="{{ url_for(
+                        'assessment.results',
+                        assessment_id=latest_assessment.assessment_id
+                    ) }}"
+                    class="primary-btn"
+                >
+                    View Full Results
+                </a>
+
+                <a
+                    href="{{ url_for('assessment.start_assessment') }}"
+                    class="secondary-btn"
+                >
+                    Start New Assessment
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             CHARTS
+        ========================= -->
+
+        <section class="content-grid">
+
+            <!-- Skill Performance -->
+
+            {% if skill_results %}
+
+            <div class="chart-card">
+
+                <div class="chart-header">
+
+                    <h2>📊 Skill Performance</h2>
+
+                    <p>
+                        Your performance across {{ skill_results|length }} skills.
+                    </p>
+
+                </div>
+
+                <div class="chart-container">
+
+                    <canvas id="dashboardSkillChart"></canvas>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+
+            <!-- Assessment Progress -->
+
+            <div class="chart-card">
+
+                <div class="chart-header">
+
+                    <h2>📈 Assessment Progress</h2>
+
+                    {% if progress|length > 1 %}
+
+                    <p>
+                        Track your performance over time.
+                    </p>
+
+                    {% else %}
+
+                    <p>
+                        Complete another assessment to track your progress.
+                    </p>
+
+                    {% endif %}
+
+                </div>
+
+
+                {% if progress|length > 1 %}
+
+                <div class="chart-container">
+
+                    <canvas id="dashboardProgressChart"></canvas>
+
+                </div>
+
+                {% else %}
+
+                <div class="empty-state">
+
+                    <p>
+                        Your progress chart will appear after you complete
+                        another assessment.
+                    </p>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+        <!-- =========================
+             SKILL SUMMARY
+        ========================= -->
+
+        {% if skill_results %}
+
+        <section class="skill-summary">
+
+            <div class="summary-header">
+
+                <h2>Skill Overview</h2>
+
+                <p>
+                    A quick breakdown of your current skill levels.
+                </p>
+
+            </div>
+
+            <div class="skill-summary-grid">
+
+                <div class="skill-summary-card strong-card">
+
+                    <div class="summary-icon">
+                        ✓
+                    </div>
+
+                    <div>
+                        <span class="summary-number">
+                            {{ skill_results|selectattr("category","equalto","Strong")|list|length }}
+                        </span>
+
+                        <span class="summary-label">
+                            Strong Skills
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div class="skill-summary-card developing-card">
+
+                    <div class="summary-icon">
+                        ◐
+                    </div>
+
+                    <div>
+                        <span class="summary-number">
+                            {{ skill_results|selectattr("category","equalto","Developing")|list|length }}
+                        </span>
+
+                        <span class="summary-label">
+                            Developing
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div class="skill-summary-card improvement-card">
+
+                    <div class="summary-icon">
+                        !
+                    </div>
+
+                    <div>
+                        <span class="summary-number">
+                            {{ skill_results|selectattr("category","equalto","Needs Improvement")|list|length }}
+                        </span>
+
+                        <span class="summary-label">
+                            Needs Improvement
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        {% endif %}
+
+        {% else %}
+
+        <!-- =========================
+             NO ASSESSMENT STATE
+        ========================= -->
+
+        <section class="empty-state">
+
+            <h2>Ready to discover your placement readiness?</h2>
+
+            <p>
+                Take your first assessment to see your skills,
+                identify gaps, and get personalized recommendations.
+            </p>
+
+            <a
+                href="{{ url_for('assessment.start_assessment') }}"
+                class="primary-btn"
+            >
+                Start Your First Assessment
+            </a>
+
+        </section>
+
+        {% endif %}
+
+    </main>
+
+
+    <!-- =========================
+         CHART.JS
+    ========================= -->
+
+    <script>
+
+        console.log(
+            "Dashboard Chart.js:",
+            typeof Chart
+        );
+
+
+        /* =========================
+           SKILL PERFORMANCE CHART
+        ========================= */
+
+        const dashboardSkillNames = [
+
+            {% for skill in skill_results %}
+
+                {{ skill.skill_name | tojson }},
+
+            {% endfor %}
+
+        ];
+
+
+        const dashboardSkillScores = [
+
+            {% for skill in skill_results %}
+
+                {{ skill.score }},
+
+            {% endfor %}
+
+        ];
+
+
+        const dashboardSkillCategories = [
+
+            {% for skill in skill_results %}
+
+                {{ skill.category | tojson }},
+
+            {% endfor %}
+
+        ];
+
+
+        const dashboardBarColors =
+            dashboardSkillCategories.map(category => {
+
+                if (category === "Strong") {
+                    return "#27ae60";
+                }
+
+                if (category === "Developing") {
+                    return "#f39c12";
+                }
+
+                return "#e74c3c";
+
+            });
+
+
+        const dashboardSkillCtx =
+            document.getElementById(
+                "dashboardSkillChart"
+            );
+
+
+        if (dashboardSkillCtx) {
+
+            new Chart(
+
+                dashboardSkillCtx,
+
+                {
+
+                    type: "bar",
+
+                    data: {
+
+                        labels:
+                            dashboardSkillNames,
+
+                        datasets: [
+
+                            {
+
+                                label:
+                                    "Skill Score (%)",
+
+                                data:
+                                    dashboardSkillScores,
+
+                                backgroundColor:
+                                    dashboardBarColors,
+
+                                borderWidth:
+                                    1
+
+                            },
+
+                            {
+
+                                label:
+                                    "Target (75%)",
+
+                                data:
+                                    dashboardSkillNames.map(() => 75),
+
+                                type:
+                                    "line",
+
+                                borderColor:
+                                    "#2563eb",
+
+                                borderWidth:
+                                    2,
+
+                                borderDash:
+                                    [6, 6],
+
+                                pointRadius:
+                                    0,
+
+                                pointHoverRadius:
+                                    0,
+
+                                fill:
+                                    false,
+
+                                tension:
+                                    0
+
+                            }
+
+                        ]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        scales: {
+
+                            y: {
+
+                                beginAtZero:
+                                    true,
+
+                                max:
+                                    100,
+
+                                title: {
+
+                                    display:
+                                        true,
+
+                                    text:
+                                        "Score (%)"
+
+                                }
+
+                            },
+
+                            x: {
+
+                                title: {
+
+                                    display:
+                                        true,
+
+                                    text:
+                                        "Skills"
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            );
+
+        }
+
+
+        /* =========================
+           ASSESSMENT PROGRESS CHART
+        ========================= */
+
+        {% if progress|length > 1 %}
+
+        const dashboardAssessmentLabels = [
+
+            {% for item in progress %}
+
+                "Assessment {{ loop.index }}",
+
+            {% endfor %}
+
+        ];
+
+
+        const dashboardProgressScores = [
+
+            {% for item in progress %}
+
+                {{ item.percentage }},
+
+            {% endfor %}
+
+        ];
+
+
+        const dashboardProgressCtx =
+            document.getElementById(
+                "dashboardProgressChart"
+            );
+
+
+        if (dashboardProgressCtx) {
+
+            new Chart(
+
+                dashboardProgressCtx,
+
+                {
+
+                    type: "line",
+
+                    data: {
+
+                        labels:
+
+                            dashboardAssessmentLabels,
+
+                        datasets: [
+
+                            {
+
+                                label:
+                                    "Overall Score (%)",
+
+                                data:
+                                    dashboardProgressScores,
+
+                                tension:
+                                    0.3,
+
+                                fill:
+                                    false
+
+                            }
+
+                        ]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        scales: {
+
+                            y: {
+
+                                beginAtZero:
+                                    true,
+
+                                max:
+                                    100,
+
+                                title: {
+
+                                    display:
+                                        true,
+
+                                    text:
+                                        "Score (%)"
+
+                                }
+
+                            },
+
+                            x: {
+
+                                title: {
+
+                                    display:
+                                        true,
+
+                                    text:
+                                        "Assessment"
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            );
+
+        }
+
+        {% endif %}
+
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Register - CareerCompass</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #0f172a;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            height: 86px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 8%;
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: 700;
+            color: #2864e6;
+            text-decoration: none;
+        }
+
+        .nav-text {
+            color: #64748b;
+            font-size: 15px;
+        }
+
+
+        /* =========================
+           PAGE
+        ========================= */
+
+        .page {
+            min-height: calc(100vh - 86px);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 40px 20px;
+        }
+
+
+        /* =========================
+           REGISTER CARD
+        ========================= */
+
+        .register-card {
+            width: 100%;
+            max-width: 470px;
+
+            background: white;
+
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+
+            padding: 40px;
+
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06);
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .register-header h1 {
+            margin: 0 0 10px;
+
+            font-size: 30px;
+            color: #0f172a;
+        }
+
+        .register-header p {
+            margin: 0;
+
+            color: #64748b;
+            font-size: 15px;
+        }
+
+
+        /* =========================
+           ERROR
+        ========================= */
+
+        .error-message {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+
+            color: #dc2626;
+
+            padding: 12px 14px;
+
+            border-radius: 8px;
+
+            margin-bottom: 20px;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            color: #334155;
+        }
+
+        .form-group input {
+            width: 100%;
+
+            padding: 13px 14px;
+
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+
+            font-size: 15px;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: #2864e6;
+
+            box-shadow: 0 0 0 3px rgba(40, 100, 230, 0.12);
+        }
+
+
+        /* =========================
+           CREATE ACCOUNT BUTTON
+        ========================= */
+
+        .register-button {
+            width: 100%;
+
+            padding: 13px;
+
+            border: none;
+            border-radius: 8px;
+
+            background: #2864e6;
+            color: white;
+
+            font-size: 16px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .register-button:hover {
+            background: #1f55c7;
+        }
+
+
+        /* =========================
+           LOGIN LINK
+        ========================= */
+
+        .login-text {
+            text-align: center;
+
+            margin-top: 24px;
+
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .login-text a {
+            color: #2864e6;
+
+            font-weight: 600;
+
+            text-decoration: none;
+        }
+
+        .login-text a:hover {
+            text-decoration: underline;
+        }
+        .home-link {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            color: #64748b;
+            font-size: 14px;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .home-link:hover {
+            color: #2864e6;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .logo {
+                font-size: 25px;
+            }
+
+            .nav-text {
+                display: none;
+            }
+
+            .register-card {
+                padding: 30px 24px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <a
+            href="{{ url_for('auth.login') }}"
+            class="logo"
+        >
+            CareerCompass
+        </a>
+
+        <span class="nav-text">
+            Placement Readiness Platform
+        </span>
+
+    </nav>
+
+
+    <!-- PAGE -->
+
+    <main class="page">
+
+        <div class="register-card">
+
+
+            <!-- HEADER -->
+
+            <div class="register-header">
+
+                <h1>
+                    Create Your Account 🚀
+                </h1>
+
+                <p>
+                    Start your CareerCompass journey today.
+                </p>
+
+            </div>
+
+
+            <!-- ERROR -->
+
+            {% if error %}
+
+                <div class="error-message">
+                    {{ error }}
+                </div>
+
+            {% endif %}
+
+
+            <!-- REGISTER FORM -->
+
+            <form method="POST">
+
+
+                <div class="form-group">
+
+                    <label for="full_name">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="full_name"
+                        name="full_name"
+                        value="{{ full_name }}"
+                        placeholder="Enter your full name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input
+                        type="text"
+                        id="email"
+                        name="email"
+                        value="{{ email }}"
+                        placeholder="Enter your email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Create a password"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="register-button"
+                >
+                    Create Account
+                </button>
+
+
+            </form>
+
+
+            <!-- LOGIN -->
+
+            <p class="login-text">
+
+                Already have an account?
+
+                <a href="{{ url_for('auth.login') }}">
+                    Login
+                </a>
+
+            </p>
+            <a
+                href="{{ url_for('home') }}"
+                class="home-link"
+            >
+                Home
+            </a>
+        </div>
+
+    </main>
+
+
+</body>
+
+</html>

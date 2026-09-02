@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CareerCompass - Placement Readiness</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            background: #f4f7fb;
+
+            color: #0f172a;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            height: 86px;
+
+            background: white;
+
+            border-bottom: 1px solid #e2e8f0;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 8%;
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: 700;
+
+            color: #2864e6;
+
+            text-decoration: none;
+        }
+
+        .nav-link {
+            color: #64748b;
+
+            font-size: 15px;
+
+            text-decoration: none;
+        }
+
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            min-height: calc(100vh - 86px);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 60px 20px;
+        }
+
+        .hero-content {
+            max-width: 900px;
+
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-block;
+
+            padding: 8px 16px;
+
+            margin-bottom: 22px;
+
+            background: #e8efff;
+
+            color: #2864e6;
+
+            border-radius: 30px;
+
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .hero h1 {
+            margin: 0;
+
+            font-size: 58px;
+
+            line-height: 1.1;
+
+            color: #0f172a;
+        }
+
+        .hero h1 span {
+            color: #2864e6;
+        }
+
+        .hero-subtitle {
+            margin: 22px auto 0;
+
+            max-width: 680px;
+
+            font-size: 20px;
+
+            line-height: 1.6;
+
+            color: #64748b;
+        }
+
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        .hero-buttons {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 14px;
+
+            margin-top: 35px;
+        }
+
+        .btn {
+            display: inline-block;
+
+            padding: 14px 28px;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            font-weight: 600;
+
+            text-decoration: none;
+
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: #2864e6;
+
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1f55c7;
+        }
+
+        .btn-secondary {
+            background: white;
+
+            color: #2864e6;
+
+            border: 1px solid #2864e6;
+        }
+
+        .btn-secondary:hover {
+            background: #f0f5ff;
+        }
+
+
+        /* =========================
+           FEATURES
+        ========================= */
+
+        .features {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 20px;
+
+            max-width: 900px;
+
+            margin: 60px auto 0;
+        }
+
+        .feature-card {
+            background: white;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 14px;
+
+            padding: 25px;
+
+            text-align: left;
+
+            box-shadow: 0 5px 18px rgba(15, 23, 42, 0.04);
+        }
+
+        .feature-icon {
+            font-size: 28px;
+
+            margin-bottom: 12px;
+        }
+
+        .feature-card h3 {
+            margin: 0 0 8px;
+
+            font-size: 17px;
+        }
+
+        .feature-card p {
+            margin: 0;
+
+            color: #64748b;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .logo {
+                font-size: 25px;
+            }
+
+            .hero {
+                padding: 45px 20px;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .hero-subtitle {
+                font-size: 17px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+
+                max-width: 300px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+
+                margin-top: 45px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <a
+            href="/"
+            class="logo"
+        >
+            CareerCompass
+        </a>
+
+        <a
+            href="{{ url_for('auth.login') }}"
+            class="nav-link"
+        >
+            Already have an account? Login
+        </a>
+
+    </nav>
+
+
+    <!-- HERO -->
+
+    <main class="hero">
+
+        <div class="hero-content">
+
+
+            <div class="hero-badge">
+                🎯 Placement Readiness Analytics Platform
+            </div>
+
+
+            <h1>
+                Navigate Your Career<br>
+                with <span>Confidence.</span>
+            </h1>
+
+
+            <p class="hero-subtitle">
+
+                Welcome to CareerCompass 🚀
+
+                <br>
+
+                Assess your skills, track your placement readiness,
+                identify skill gaps, and get personalized recommendations
+                to prepare for your career.
+
+            </p>
+
+
+            <!-- BUTTONS -->
+
+            <div class="hero-buttons">
+
+                <a
+                    href="{{ url_for('auth.register') }}"
+                    class="btn btn-primary"
+                >
+                    Get Started
+                </a>
+
+                <a
+                    href="{{ url_for('auth.login') }}"
+                    class="btn btn-secondary"
+                >
+                    Login
+                </a>
+
+            </div>
+
+
+            <!-- FEATURES -->
+
+            <div class="features">
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        📊
+                    </div>
+
+                    <h3>
+                        Assess Your Skills
+                    </h3>
+
+                    <p>
+                        Evaluate your current knowledge across
+                        important data analytics skills.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        🎯
+                    </div>
+
+                    <h3>
+                        Track Your Readiness
+                    </h3>
+
+                    <p>
+                        Understand your placement readiness and
+                        monitor your progress over time.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        💡
+                    </div>
+
+                    <h3>
+                        Identify Skill Gaps
+                    </h3>
+
+                    <p>
+                        Discover areas that need improvement and
+                        receive personalized recommendations.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+</body>
+
+</html>

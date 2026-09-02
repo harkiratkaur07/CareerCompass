@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login - CareerCompass</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #0f172a;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            height: 86px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 8%;
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: 700;
+            color: #2864e6;
+            text-decoration: none;
+        }
+
+        .nav-text {
+            color: #64748b;
+            font-size: 15px;
+        }
+
+
+        /* =========================
+           PAGE
+        ========================= */
+
+        .page {
+            min-height: calc(100vh - 86px);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 40px 20px;
+        }
+
+
+        /* =========================
+           LOGIN CARD
+        ========================= */
+
+        .login-card {
+            width: 100%;
+            max-width: 430px;
+
+            background: white;
+
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+
+            padding: 40px;
+
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h1 {
+            margin: 0 0 10px;
+
+            font-size: 30px;
+            color: #0f172a;
+        }
+
+        .login-header p {
+            margin: 0;
+
+            color: #64748b;
+            font-size: 15px;
+        }
+
+
+        /* =========================
+           ERROR
+        ========================= */
+
+        .error-message {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+
+            color: #dc2626;
+
+            padding: 12px 14px;
+
+            border-radius: 8px;
+
+            margin-bottom: 20px;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            color: #334155;
+        }
+
+        .form-group input {
+            width: 100%;
+
+            padding: 13px 14px;
+
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+
+            font-size: 15px;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: #2864e6;
+
+            box-shadow: 0 0 0 3px rgba(40, 100, 230, 0.12);
+        }
+
+
+        /* =========================
+           LOGIN BUTTON
+        ========================= */
+
+        .login-button {
+            width: 100%;
+
+            padding: 13px;
+
+            border: none;
+            border-radius: 8px;
+
+            background: #2864e6;
+            color: white;
+
+            font-size: 16px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .login-button:hover {
+            background: #1f55c7;
+        }
+
+
+        /* =========================
+           REGISTER
+        ========================= */
+
+        .register-text {
+            text-align: center;
+
+            margin-top: 24px;
+
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .register-text a {
+            color: #2864e6;
+
+            font-weight: 600;
+
+            text-decoration: none;
+        }
+
+        .register-text a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .logo {
+                font-size: 25px;
+            }
+
+            .nav-text {
+                display: none;
+            }
+
+            .login-card {
+                padding: 30px 24px;
+            }
+
+        }
+
+        .home-link {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            color: #64748b;
+            font-size: 14px;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .home-link:hover {
+            color: #2864e6;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <a
+            href="{{ url_for('auth.login') }}"
+            class="logo"
+        >
+            CareerCompass
+        </a>
+
+        <span class="nav-text">
+            Placement Readiness Platform
+        </span>
+
+    </nav>
+
+
+    <!-- PAGE -->
+
+    <main class="page">
+
+        <div class="login-card">
+
+
+            <!-- HEADER -->
+
+            <div class="login-header">
+
+                <h1>
+                    Welcome Back 👋
+                </h1>
+
+                <p>
+                    Login to continue your CareerCompass journey.
+                </p>
+
+            </div>
+
+
+            <!-- ERROR -->
+
+            {% if error %}
+
+                <div class="error-message">
+                    {{ error }}
+                </div>
+
+            {% endif %}
+
+
+            <!-- LOGIN FORM -->
+
+            <form method="POST">
+
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input
+                        type="text"
+                        id="email"
+                        name="email"
+                        value="{{ email or '' }}"
+                        placeholder="Enter your email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="login-button"
+                >
+                    Login
+                </button>
+
+
+            </form>
+
+
+            <!-- REGISTER -->
+
+            <p class="register-text">
+
+                Don't have an account?
+
+                <a href="{{ url_for('auth.register') }}">
+                    Create an account
+                </a>
+
+            </p>
+            <a
+                href="{{ url_for('home') }}"
+                class="home-link"
+            >
+                Home
+            </a>
+
+
+        </div>
+
+    </main>
+
+
+</body>
+
+</html>

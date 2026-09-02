@@ -1,0 +1,2072 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CareerCompass - Results</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+            min-height: 100vh;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            height: 70px;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+
+        .brand {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+
+        .nav-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+
+        .nav-link {
+            text-decoration: none;
+            padding: 9px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            border: 1px solid #d1d5db;
+            transition: 0.2s ease;
+        }
+
+
+        .nav-link:hover {
+            background: #f3f4f6;
+        }
+
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+
+        .results-container {
+            width: 88%;
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 40px 0 60px;
+        }
+
+
+        /* =========================
+           PAGE HEADER
+        ========================= */
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+
+        .page-header h1 {
+            font-size: 32px;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+
+        .page-header p {
+            color: #6b7280;
+            font-size: 15px;
+        }
+
+
+        /* =========================
+           HERO RESULT CARD
+        ========================= */
+
+        .result-hero {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom:24px;
+        }
+
+
+        .score-panel,.readiness-panel {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow:0 4px 15px rgba(0,0,0,0.08);
+            min-height:230px;
+        }
+        .score-panel{
+            border-top: 5px solid #3498db;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .score-label {
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #7f8c8d;
+            font-weight:600;
+        }
+
+
+        .score {
+            font-size: 52px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin:12px 0;
+        }
+
+
+        .score-total {
+            color: #7f8c8d;
+            font-size: 15px;
+          
+        }
+
+
+        .performance {
+            margin-top: 16px;
+            font-size: 15px;
+            color: #555;
+        }
+
+
+        .performance strong {
+            color: #2c3e50;
+        }
+
+
+        /* =========================
+           READINESS
+        ========================= */
+
+        .readiness-panel {
+            flex-direction:column;
+            display:flex;
+            border-top: 5px solid #27ae60;
+            justify-content:center;
+            align-items:center;
+            text-align: center;
+        }
+
+
+        .readiness-panel h2 {
+            color: #2c3e50;
+            margin-bottom: 18px;
+        }
+
+
+        .readiness-level {
+            font-size: 30px;
+            font-weight: 700;
+            margin:8px 0 16px;
+        }
+
+
+        .readiness-explanation {
+            color: #666;
+            max-width: 500px;
+            line-height: 1.6;
+        }
+
+
+        .readiness-high {
+            color: #27ae60;
+        }
+
+
+        .readiness-moderate {
+            color: #f39c12;
+        }
+
+
+        .readiness-developing {
+            color: #e67e22;
+        }
+
+
+        .readiness-early {
+            color: #e74c3c;
+        }
+
+
+        /* =========================
+           SECTION CARD
+        ========================= */
+
+        .section {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+
+        .section-header {
+            margin-bottom: 20px;
+        }
+
+
+        .section-header h2 {
+            font-size: 20px;
+            color: #111827;
+            margin-bottom: 6px;
+        }
+
+
+        .section-header p {
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           ASSESSMENT SUMMARY
+        ========================= */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+
+        .summary-item {
+            background: #f9fafb;
+            padding: 18px;
+            border-radius: 10px;
+        }
+
+
+        .summary-item span {
+            display: block;
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+
+
+        .summary-item strong {
+            font-size: 18px;
+            color: #111827;
+        }
+
+
+        /* =========================
+           CHARTS
+        ========================= */
+
+        .chart-container {
+            position: relative;
+            height: 380px;
+        }
+
+
+        .small-chart-container {
+            position: relative;
+            height: 320px;
+        }
+
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+
+        /* =========================
+           PROGRESS MESSAGE
+        ========================= */
+
+        .progress-message {
+            padding: 13px 16px;
+            border-radius: 9px;
+            background: #f9fafb;
+            margin-bottom: 18px;
+            font-size: 14px;
+        }
+
+
+        .improvement {
+            color: #15803d;
+        }
+
+
+        .decline {
+            color: #dc2626;
+        }
+
+
+        .no-change {
+            color: #6b7280;
+        }
+
+
+        /* =========================
+           SKILL GAP
+        ========================= */
+
+        .skill-gap-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+
+        .skill-gap-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 11px;
+            padding: 18px;
+            background: #ffffff;
+        }
+
+
+        .skill-gap-card h3 {
+            font-size: 16px;
+            color: #111827;
+            margin-bottom: 14px;
+        }
+
+
+        .skill-score-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+
+        .progress-bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+
+        .progress-fill {
+            height: 100%;
+            background: #2563eb;
+            border-radius: 10px;
+        }
+
+
+        .gap-text {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+
+        .target-achieved {
+            color: #15803d;
+            font-weight: 600;
+        }
+
+
+        /* =========================
+           SKILL CATEGORY GRID
+        ========================= */
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+
+        .category-column {
+            padding: 18px;
+            border-radius: 12px;
+            background: #f9fafb;
+        }
+
+
+        .category-column h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+
+        .strong-title {
+            color: #15803d;
+        }
+
+
+        .developing-title {
+            color: #b45309;
+        }
+
+
+        .improvement-title {
+            color: #dc2626;
+        }
+
+
+        .skill-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 9px;
+            padding: 14px;
+            margin-bottom: 10px;
+        }
+
+
+        .skill-card:last-child {
+            margin-bottom: 0;
+        }
+
+
+        .skill-name {
+            font-weight: 600;
+            color: #111827;
+            font-size: 14px;
+            margin-bottom: 7px;
+        }
+
+
+        .skill-detail {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+
+        .empty-text {
+            color: #9ca3af;
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           RECOMMENDATIONS
+        ========================= */
+
+        .recommendation-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 11px;
+            padding: 20px;
+            margin-bottom: 14px;
+            background: #ffffff;
+        }
+
+
+        .recommendation-card:last-child {
+            margin-bottom: 0;
+        }
+
+
+        .recommendation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+
+        .recommendation-header h3 {
+            font-size: 16px;
+            color: #111827;
+        }
+
+
+        .priority-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+
+        .priority-high {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+
+        .priority-medium {
+            background: #fffbeb;
+            color: #b45309;
+        }
+
+
+        .priority-low {
+            background: #ecfdf5;
+            color: #15803d;
+        }
+
+
+        .recommendation-text {
+            color: #4b5563;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+
+        .recommendation-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+
+        /* =========================
+           BOTTOM ACTION
+        ========================= */
+
+        .bottom-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+
+        .primary-btn,
+        .secondary-btn {
+            display: inline-block;
+            padding: 11px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+
+        .primary-btn {
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+
+        .primary-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+
+        .secondary-btn {
+            background: #ffffff;
+            color: #2563eb;
+            border: 1px solid #2563eb;
+        }
+
+
+        .secondary-btn:hover {
+            background: #eff6ff;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+        @media (max-width: 768px) {
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .score-panel,
+            .readiness-panel {
+                min-height: auto;
+            }
+
+        }
+        @media (max-width: 900px) {
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .skill-gap-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+
+            .results-container {
+                width: 92%;
+                padding-top: 30px;
+            }
+
+
+            .page-header h1 {
+                font-size: 26px;
+            }
+
+
+            .score {
+                font-size: 40px;
+            }
+
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .chart-container {
+                height: 300px;
+            }
+
+
+            .small-chart-container {
+                height: 280px;
+            }
+
+
+            .recommendation-header {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+
+    <nav class="navbar">
+
+        <a
+            href="{{ url_for('auth.dashboard') }}"
+            class="brand"
+        >
+            CareerCompass
+        </a>
+
+
+        <div class="nav-actions">
+
+            <a
+                href="{{ url_for('auth.dashboard') }}"
+                class="nav-link"
+            >
+                ← Dashboard
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================= -->
+
+    <main class="results-container">
+
+
+        <!-- PAGE HEADER -->
+
+        <section class="page-header">
+
+            <h1>Assessment Results 🎯</h1>
+
+            <p>
+                Here's a detailed look at your placement readiness
+                and current skill performance.
+            </p>
+
+        </section>
+
+
+        <!-- =========================
+             HERO
+        ========================= -->
+
+        <section class="result-hero">
+
+            <div class="hero-grid">
+
+
+                <!-- SCORE -->
+
+                <div class="score-panel">
+
+                    <div class="score-label">
+                        Overall Score
+                    </div>
+
+                    <div class="score">
+                        {{ percentage }}%
+                    </div>
+
+                    <div class="score-total">
+
+                        {{ assessment.total_score }}
+                        /
+                        {{ total_questions }}
+
+                        correct
+
+                    </div>
+
+                    <div class="performance">
+
+                        Overall Performance:
+
+                        <strong>
+                            {{ percentage }}%
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- READINESS -->
+
+                <div class="readiness-panel">
+
+                    <h2>
+                        🎯 Placement Readiness
+                    </h2>
+
+
+                    <div class="readiness-level
+
+                        {% if readiness_level == 'Highly Ready' %}
+                            readiness-high
+
+                        {% elif readiness_level == 'Moderately Ready' %}
+                            readiness-moderate
+
+                        {% elif readiness_level == 'Developing' %}
+                            readiness-developing
+
+                        {% else %}
+                            readiness-early
+
+                        {% endif %}
+
+                    ">
+
+                        {{ readiness_level }}
+
+                    </div>
+
+
+                    <p class="readiness-explanation">
+
+                        {{ readiness_explanation }}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             ASSESSMENT SUMMARY
+        ========================= -->
+
+        <section class="section">
+
+            <div class="section-header">
+
+                <h2>
+                    📋 Assessment Summary
+                </h2>
+
+                <p>
+                    Overview of your completed assessment.
+                </p>
+
+            </div>
+
+
+            <div class="summary-grid">
+
+                <div class="summary-item">
+
+                    <span>
+                        Questions
+                    </span>
+
+                    <strong>
+                        {{ total_questions }}
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-item">
+
+                    <span>
+                        Completed
+                    </span>
+
+                    <strong>
+                        {{ total_questions }}
+                        /
+                        {{ total_questions }}
+                    </strong>
+
+                </div>
+                <div class="summary-item">
+
+                    <span>
+                        🎯 Target Score
+                    </span>
+
+                    <strong>
+                        {{ skill_target }}%
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             SKILL PERFORMANCE
+        ========================= -->
+
+        <section class="section">
+
+            <div class="section-header">
+
+                <h2>
+                    📊 Skill Performance Overview
+                </h2>
+
+                <p>
+                    Your target score is
+                    <strong>{{ skill_target }}%</strong>.
+                    The dashed line represents your target.
+                </p>
+
+            </div>
+
+
+            <div class="chart-container">
+
+                <canvas id="skillChart"></canvas>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             OVERALL + SKILL PROGRESS
+        ========================= -->
+
+        <div class="chart-grid">
+
+
+            <!-- OVERALL PROGRESS -->
+
+            <section class="section">
+
+                <div class="section-header">
+
+                    <h2>
+                        📈 Assessment Progress
+                    </h2>
+
+                    {% if progress|length > 1 %}
+
+                        <p>
+                            Track how your overall performance
+                            has changed over time.
+                        </p>
+
+                    {% else %}
+
+                        <p>
+                            Complete another assessment to
+                            start tracking your progress.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+
+                {% if progress|length > 1 %}
+
+
+                    {% if progress_change is not none %}
+
+                        {% if progress_change > 0 %}
+
+                            <div class="progress-message improvement">
+
+                                📈
+
+                                <strong>
+                                    Improvement:
+                                </strong>
+
+                                ↑ {{ progress_change }}
+                                percentage points
+
+                            </div>
+
+
+                        {% elif progress_change < 0 %}
+
+                            <div class="progress-message decline">
+
+                                📉
+
+                                <strong>
+                                    Change:
+                                </strong>
+
+                                ↓ {{ progress_change|abs }}
+                                percentage points
+
+                            </div>
+
+
+                        {% else %}
+
+                            <div class="progress-message no-change">
+
+                                ➡️
+
+                                <strong>
+                                    Change:
+                                </strong>
+
+                                No change from your previous
+                                assessment.
+
+                            </div>
+
+                        {% endif %}
+
+                    {% endif %}
+
+
+                    <div class="small-chart-container">
+
+                        <canvas id="progressChart"></canvas>
+
+                    </div>
+
+
+                {% else %}
+
+                    <p class="empty-text">
+
+                        Complete another assessment to see
+                        your progress over time.
+
+                    </p>
+
+                {% endif %}
+
+            </section>
+
+
+            <!-- SKILL PROGRESS -->
+
+            <section class="section">
+
+                <div class="section-header">
+
+                    <h2>
+                        📈 Skill-Level Progress
+                    </h2>
+
+                    {% if progress|length > 1 %}
+
+                        <p>
+                            Track how each skill has changed
+                            across assessments.
+                        </p>
+
+                    {% else %}
+
+                        <p>
+                            Complete another assessment to
+                            track individual skill improvement.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+
+                {% if progress|length > 1 %}
+
+                    <div class="small-chart-container">
+
+                        <canvas id="skillProgressChart"></canvas>
+
+                    </div>
+
+                {% else %}
+
+                    <p class="empty-text">
+
+                        Complete another assessment to see
+                        how your individual skills improve.
+
+                    </p>
+
+                {% endif %}
+
+            </section>
+
+        </div>
+
+
+        <!-- =========================
+             SKILL GAP ANALYSIS
+        ========================= -->
+
+        <section class="section">
+
+            <div class="section-header">
+
+                <h2>
+                    🎯 Skill Gap Analysis
+                </h2>
+
+                <p>
+
+                    The skill gap shows how far each skill
+                    is below the {{ skill_target }}% target.
+
+                </p>
+
+            </div>
+
+
+            <div class="skill-gap-grid">
+
+
+                {% for skill in skill_gaps %}
+
+                    <div class="skill-gap-card">
+
+                        <h3>
+                            {{ skill.skill_name }}
+                        </h3>
+
+
+                        <div class="skill-score-row">
+
+                            <span>
+                                Current Score
+                            </span>
+
+                            <strong>
+                                {{ skill.score }}%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="progress-bar">
+
+                            <div
+                                class="progress-fill"
+                                style="width: {{ skill.score }}%;"
+                            ></div>
+
+                        </div>
+
+
+                        <div class="skill-score-row">
+
+                            <span>
+                                Target
+                            </span>
+
+                            <strong>
+                                {{ skill.target }}%
+                            </strong>
+
+                        </div>
+
+
+                        {% if skill.gap > 0 %}
+
+                            <p class="gap-text">
+
+                                Skill Gap:
+
+                                <strong>
+                                    {{ skill.gap }}%
+                                </strong>
+
+                            </p>
+
+                        {% else %}
+
+                            <p class="gap-text target-achieved">
+
+                                ✓ Target achieved
+
+                            </p>
+
+                        {% endif %}
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             SKILL CATEGORIES
+        ========================= -->
+
+        <section class="section">
+
+            <div class="section-header">
+
+                <h2>
+                    📊 Skill Performance
+                </h2>
+
+                <p>
+                    Your skills grouped according to their
+                    current performance level.
+                </p>
+
+            </div>
+
+
+            <div class="category-grid">
+
+
+                <!-- STRONG -->
+
+                <div class="category-column">
+
+                    <h3 class="strong-title">
+                        💪 Strong Skills
+                    </h3>
+
+
+                    {% if strong_skills %}
+
+                        {% for result in strong_skills %}
+
+                            <div class="skill-card">
+
+                                <div class="skill-name">
+                                    {{ result.skill_name }}
+                                </div>
+
+                                <div class="skill-detail">
+                                    Score:
+                                    <strong>
+                                        {{ result.score }}%
+                                    </strong>
+                                </div>
+
+                                <div class="skill-detail">
+                                    Correct:
+                                    {{ result.correct }}
+                                    /
+                                    {{ result.attempted }}
+                                </div>
+
+                            </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <p class="empty-text">
+                            No strong skills identified yet.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- DEVELOPING -->
+
+                <div class="category-column">
+
+                    <h3 class="developing-title">
+                        📚 Developing Skills
+                    </h3>
+
+
+                    {% if developing_skills %}
+
+                        {% for result in developing_skills %}
+
+                            <div class="skill-card">
+
+                                <div class="skill-name">
+                                    {{ result.skill_name }}
+                                </div>
+
+                                <div class="skill-detail">
+                                    Score:
+                                    <strong>
+                                        {{ result.score }}%
+                                    </strong>
+                                </div>
+
+                                <div class="skill-detail">
+                                    Correct:
+                                    {{ result.correct }}
+                                    /
+                                    {{ result.attempted }}
+                                </div>
+
+                            </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <p class="empty-text">
+                            No developing skills identified.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- NEEDS IMPROVEMENT -->
+
+                <div class="category-column">
+
+                    <h3 class="improvement-title">
+                        ⚠️ Needs Improvement
+                    </h3>
+
+
+                    {% if needs_improvement %}
+
+                        {% for result in needs_improvement %}
+
+                            <div class="skill-card">
+
+                                <div class="skill-name">
+                                    {{ result.skill_name }}
+                                </div>
+
+                                <div class="skill-detail">
+                                    Score:
+                                    <strong>
+                                        {{ result.score }}%
+                                    </strong>
+                                </div>
+
+                                <div class="skill-detail">
+                                    Correct:
+                                    {{ result.correct }}
+                                    /
+                                    {{ result.attempted }}
+                                </div>
+
+                            </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <p class="empty-text">
+                            No major skill gaps identified.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             RECOMMENDATIONS
+        ========================= -->
+
+        <section class="section">
+
+            <div class="section-header">
+
+                <h2>
+                    🎯 Personalized Recommendations
+                </h2>
+
+                <p>
+                    Based on the questions you got wrong,
+                    here are the areas you should focus on.
+                </p>
+
+            </div>
+
+
+            {% if recommendations %}
+
+
+                {% for recommendation in recommendations %}
+
+                    <div class="recommendation-card">
+
+
+                        <div class="recommendation-header">
+
+                            <h3>
+                                {{ recommendation.topic }}
+                            </h3>
+
+
+                            {% if recommendation.student_priority == "High" %}
+
+                                <span class="priority-badge priority-high">
+                                    🔴 High Priority
+                                </span>
+
+
+                            {% elif recommendation.student_priority == "Medium" %}
+
+                                <span class="priority-badge priority-medium">
+                                    🟠 Medium Priority
+                                </span>
+
+
+                            {% else %}
+
+                                <span class="priority-badge priority-low">
+                                    🟢 Low Priority
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <p class="recommendation-text">
+
+                            {{ recommendation.recommendation_text }}
+
+                        </p>
+
+
+                        <div class="recommendation-meta">
+
+                            <span>
+                                <strong>
+                                    Skill Gap:
+                                </strong>
+
+                                {{ recommendation.skill_gap }}%
+                            </span>
+
+
+                            <span>
+                                <strong>
+                                    Mistakes:
+                                </strong>
+
+                                {{ recommendation.mistakes }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+
+            {% else %}
+
+                <p class="empty-text">
+
+                    🎉 Great job! No specific improvement
+                    areas were identified from this assessment.
+
+                </p>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- =========================
+             BOTTOM ACTIONS
+        ========================= -->
+
+        <div class="bottom-actions">
+
+            <a
+                href="{{ url_for('auth.dashboard') }}"
+                class="primary-btn"
+            >
+                ← Back to Dashboard
+            </a>
+
+
+            <a
+                href="{{ url_for('assessment.start_assessment') }}"
+                class="secondary-btn"
+            >
+                Start New Assessment
+            </a>
+
+        </div>
+
+
+    </main>
+
+
+    <!-- =========================
+         SKILL CHART
+    ========================= -->
+
+    <script>
+
+        const skillNames = [
+
+            {% for result in skill_results %}
+
+                {{ result.skill_name | tojson }},
+
+            {% endfor %}
+
+        ];
+
+
+        const skillScores = [
+
+            {% for result in skill_results %}
+
+                {{ result.score }},
+
+            {% endfor %}
+
+        ];
+
+
+        const skillCategories = [
+
+            {% for result in skill_results %}
+
+                {{ result.category | tojson }},
+
+            {% endfor %}
+
+        ];
+
+
+        const skillTarget = {{ skill_target }};
+
+
+        const barColors =
+            skillCategories.map(category => {
+
+                if (category === "Strong") {
+                    return "#27ae60";
+                }
+
+                if (category === "Developing") {
+                    return "#f39c12";
+                }
+
+                return "#e74c3c";
+
+            });
+
+
+        const skillCtx =
+            document.getElementById("skillChart");
+
+
+        if (skillCtx) {
+
+            new Chart(
+
+                skillCtx,
+
+                {
+
+                    type: "bar",
+
+                    data: {
+
+                        labels:
+                            skillNames,
+
+                        datasets: [
+
+                            {
+
+                                label:
+                                    "Skill Score (%)",
+
+                                data:
+                                    skillScores,
+
+                                backgroundColor:
+                                    barColors,
+
+                                borderWidth:
+                                    1
+
+                            },
+
+
+                            {
+
+                                type:
+                                    "line",
+
+                                label:
+                                    "Target Score (75%)",
+
+                                data:
+                                    skillNames.map(
+                                        () => skillTarget
+                                    ),
+
+                                borderColor:
+                                    "#2563eb",
+
+                                borderWidth:
+                                    2,
+
+                                borderDash:
+                                    [6, 6],
+
+                                pointRadius:
+                                    0,
+
+                                fill:
+                                    false
+
+                            }
+
+                        ]
+
+                    },
+
+
+                    options: {
+
+                        responsive:
+                            true,
+
+                        maintainAspectRatio:
+                            false,
+
+                        plugins: {
+
+                            legend: {
+
+                                display:
+                                    true
+
+                            },
+
+                            tooltip: {
+
+                                callbacks: {
+
+                                    label:
+                                        function(context) {
+
+                                            if (
+                                                context.dataset.type === "line"
+                                            ) {
+
+                                                return (
+                                                    "Target: " +
+                                                    context.raw +
+                                                    "%"
+                                                );
+
+                                            }
+
+                                            return (
+
+                                                context.dataset.label +
+                                                ": " +
+                                                context.raw +
+                                                "%"
+
+                                            );
+
+                                        }
+
+                                }
+
+                            }
+
+                        },
+
+
+                        scales: {
+
+                            y: {
+
+                                beginAtZero:
+                                    true,
+
+                                max:
+                                    100,
+
+                                title: {
+
+                                    display:
+                                        true,
+
+                                    text:
+                                        "Score (%)"
+
+                                }
+
+                            },
+
+                            x: {
+
+                                title: {
+
+                                    display:
+                                        true,
+
+                                    text:
+                                        "Skills"
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            );
+
+        }
+
+    </script>
+
+
+    <!-- =========================
+         ASSESSMENT PROGRESS CHART
+    ========================= -->
+
+    <script>
+
+        {% if progress|length > 1 %}
+
+            const assessmentLabels = [
+
+                {% for item in progress %}
+
+                    "Assessment {{ loop.index }}",
+
+                {% endfor %}
+
+            ];
+
+
+            const progressScores = [
+
+                {% for item in progress %}
+
+                    {{ item.percentage }},
+
+                {% endfor %}
+
+            ];
+
+
+            const progressCtx =
+                document.getElementById(
+                    "progressChart"
+                );
+
+
+            if (progressCtx) {
+
+                new Chart(
+
+                    progressCtx,
+
+                    {
+
+                        type:
+                            "line",
+
+                        data: {
+
+                            labels:
+                                assessmentLabels,
+
+                            datasets: [
+
+                                {
+
+                                    label:
+                                        "Overall Score (%)",
+
+                                    data:
+                                        progressScores,
+
+                                    tension:
+                                        0.3,
+
+                                    fill:
+                                        false
+
+                                }
+
+                            ]
+
+                        },
+
+
+                        options: {
+
+                            responsive:
+                                true,
+
+                            maintainAspectRatio:
+                                false,
+
+                            scales: {
+
+                                y: {
+
+                                    beginAtZero:
+                                        true,
+
+                                    max:
+                                        100,
+
+                                    title: {
+
+                                        display:
+                                            true,
+
+                                        text:
+                                            "Score (%)"
+
+                                    }
+
+                                },
+
+                                x: {
+
+                                    title: {
+
+                                        display:
+                                            true,
+
+                                        text:
+                                            "Assessment"
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                );
+
+            }
+
+        {% endif %}
+
+    </script>
+
+
+    <!-- =========================
+         SKILL PROGRESS CHART
+    ========================= -->
+
+    <script>
+
+        {% if progress|length > 1 %}
+
+            const skillProgressData =
+                {{ skill_progress | tojson }};
+
+
+            const skillProgressLabels = [
+
+                {% for skill_name in skill_progress.keys() %}
+
+                    {{ skill_name | tojson }},
+
+                {% endfor %}
+
+            ];
+
+
+            const skillProgressDatasets = [];
+
+
+            skillProgressLabels.forEach(
+
+                skillName => {
+
+                    const skillData =
+                        skillProgressData[skillName];
+
+
+                    skillProgressDatasets.push({
+
+                        label:
+                            skillName,
+
+                        data:
+                            skillData.scores,
+
+                        tension:
+                            0.3,
+
+                        fill:
+                            false
+
+                    });
+
+                }
+
+            );
+
+
+            const skillProgressCtx =
+                document.getElementById(
+                    "skillProgressChart"
+                );
+
+
+            if (skillProgressCtx) {
+
+                new Chart(
+
+                    skillProgressCtx,
+
+                    {
+
+                        type:
+                            "line",
+
+                        data: {
+
+                            labels: [
+
+                                {% for item in progress %}
+
+                                    "Assessment {{ loop.index }}",
+
+                                {% endfor %}
+
+                            ],
+
+                            datasets:
+                                skillProgressDatasets
+
+                        },
+
+
+                        options: {
+
+                            responsive:
+                                true,
+
+                            maintainAspectRatio:
+                                false,
+
+                            scales: {
+
+                                y: {
+
+                                    beginAtZero:
+                                        true,
+
+                                    max:
+                                        100,
+
+                                    title: {
+
+                                        display:
+                                            true,
+
+                                        text:
+                                            "Skill Score (%)"
+
+                                    }
+
+                                },
+
+                                x: {
+
+                                    title: {
+
+                                        display:
+                                            true,
+
+                                        text:
+                                            "Assessment"
+
+                                    }
+
+                                }
+
+                            },
+
+
+                            plugins: {
+
+                                legend: {
+
+                                    display:
+                                        true
+
+                                },
+
+
+                                tooltip: {
+
+                                    callbacks: {
+
+                                        label:
+                                            function(context) {
+
+                                                return (
+
+                                                    context.dataset.label +
+                                                    ": " +
+                                                    context.raw +
+                                                    "%"
+
+                                                );
+
+                                            }
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                );
+
+            }
+
+        {% endif %}
+
+    </script>
+
+
+</body>
+
+</html>

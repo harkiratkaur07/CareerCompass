@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Student Profile - CareerCompass</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #0f172a;
+        }
+
+        .navbar {
+            height: 86px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 8%;
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: 700;
+            color: #2864e6;
+            text-decoration: none;
+        }
+
+        .back-link {
+            color: #64748b;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            color: #2864e6;
+        }
+
+        .page {
+            padding: 45px 20px;
+        }
+
+        .profile-card {
+            width: 100%;
+            max-width: 850px;
+
+            margin: 0 auto;
+
+            background: white;
+
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+
+            padding: 40px;
+
+            box-shadow:
+                0 8px 25px rgba(15, 23, 42, 0.06);
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin: 0 0 8px;
+            font-size: 30px;
+        }
+
+        .header p {
+            margin: 0;
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        .section {
+            margin-top: 32px;
+        }
+
+        .section-title {
+            margin-bottom: 18px;
+
+            font-size: 18px;
+            font-weight: 700;
+
+            color: #1e293b;
+        }
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 5px;
+        }
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            color: #334155;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+
+            padding: 12px 13px;
+
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+
+            background: white;
+
+            font-size: 14px;
+
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #2864e6;
+
+            box-shadow:
+                0 0 0 3px rgba(40, 100, 230, 0.12);
+        }
+
+        .checkbox-group {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 14px;
+
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 12px;
+
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+
+            background: #f8fafc;
+
+            font-size: 14px;
+            color: #334155;
+        }
+
+        .checkbox-item input {
+            width: 16px;
+            height: 16px;
+        }
+
+        .error-message {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+
+            color: #dc2626;
+
+            padding: 12px 14px;
+
+            border-radius: 8px;
+
+            margin-bottom: 25px;
+
+            font-size: 14px;
+        }
+
+        .button-container {
+            margin-top: 35px;
+        }
+
+        .save-button {
+            width: 100%;
+
+            padding: 14px;
+
+            border: none;
+            border-radius: 8px;
+
+            background: #2864e6;
+            color: white;
+
+            font-size: 16px;
+            font-weight: 600;
+
+            cursor: pointer;
+        }
+
+        .save-button:hover {
+            background: #1f55c7;
+        }
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .logo {
+                font-size: 25px;
+            }
+
+            .form-grid,
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-card {
+                padding: 28px 22px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <nav class="navbar">
+
+        <a
+            href="{{ url_for('auth.dashboard') }}"
+            class="logo"
+        >
+            CareerCompass
+        </a>
+
+        <a
+            href="{{ url_for('auth.dashboard') }}"
+            class="back-link"
+        >
+            ← Back to Dashboard
+        </a>
+
+    </nav>
+
+
+    <main class="page">
+
+        <div class="profile-card">
+
+            <div class="header">
+
+                <h1>
+                    Student Profile
+                </h1>
+
+                <p>
+                    Tell us about your academic background
+                    and placement preparation.
+                </p>
+
+            </div>
+
+
+            {% if error %}
+
+                <div class="error-message">
+                    {{ error }}
+                </div>
+
+            {% endif %}
+
+
+            <form method="POST">
+
+
+                <!-- ACADEMIC INFORMATION -->
+
+                <div class="section">
+
+                    <div class="section-title">
+                        Academic Information
+                    </div>
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+
+                            <label for="cgpa">
+                                CGPA
+                            </label>
+
+                            <input
+                                type="number"
+                                id="cgpa"
+                                name="cgpa"
+                                min="0"
+                                max="10"
+                                step="0.01"
+                                value="{{ profile.cgpa if profile and profile.cgpa is not none else '' }}"
+                                placeholder="e.g. 8.25"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="active_backlogs">
+                                Active Backlogs
+                            </label>
+
+                            <input
+                                type="number"
+                                id="active_backlogs"
+                                name="active_backlogs"
+                                min="0"
+                                value="{{ profile.active_backlogs if profile and profile.active_backlogs is not none else 0 }}"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="academic_trend">
+                                Academic Trend
+                            </label>
+
+                            <select
+                                id="academic_trend"
+                                name="academic_trend"
+                            >
+
+                                <option value="">
+                                    Select
+                                </option>
+
+                                <option
+                                    value="Improving"
+                                    {% if profile and profile.academic_trend == "Improving" %}selected{% endif %}
+                                >
+                                    Improving
+                                </option>
+
+                                <option
+                                    value="Stable"
+                                    {% if profile and profile.academic_trend == "Stable" %}selected{% endif %}
+                                >
+                                    Stable
+                                </option>
+
+                                <option
+                                    value="Declining"
+                                    {% if profile and profile.academic_trend == "Declining" %}selected{% endif %}
+                                >
+                                    Declining
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PROJECTS -->
+
+                <div class="section">
+
+                    <div class="section-title">
+                        Projects & Experience
+                    </div>
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+
+                            <label for="projects_count">
+                                Number of Projects
+                            </label>
+
+                            <input
+                                type="number"
+                                id="projects_count"
+                                name="projects_count"
+                                min="0"
+                                value="{{ profile.projects_count if profile and profile.projects_count is not none else 0 }}"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="internships_count">
+                                Number of Internships
+                            </label>
+
+                            <input
+                                type="number"
+                                id="internships_count"
+                                name="internships_count"
+                                min="0"
+                                value="{{ profile.internships_count if profile and profile.internships_count is not none else 0 }}"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="certifications_count">
+                                Number of Certifications
+                            </label>
+
+                            <input
+                                type="number"
+                                id="certifications_count"
+                                name="certifications_count"
+                                min="0"
+                                value="{{ profile.certifications_count if profile and profile.certifications_count is not none else 0 }}"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="mock_interviews">
+                                Mock Interviews
+                            </label>
+
+                            <input
+                                type="number"
+                                id="mock_interviews"
+                                name="mock_interviews"
+                                min="0"
+                                value="{{ profile.mock_interviews if profile and profile.mock_interviews is not none else 0 }}"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="checkbox-group">
+
+                        <label class="checkbox-item">
+
+                            <input
+                                type="checkbox"
+                                name="real_world_project"
+                                {% if profile and profile.real_world_project %}checked{% endif %}
+                            >
+
+                            Real-world project
+
+                        </label>
+
+
+                        <label class="checkbox-item">
+
+                            <input
+                                type="checkbox"
+                                name="deployed_project"
+                                {% if profile and profile.deployed_project %}checked{% endif %}
+                            >
+
+                            Deployed project
+
+                        </label>
+
+
+                        <label class="checkbox-item">
+
+                            <input
+                                type="checkbox"
+                                name="relevant_internship"
+                                {% if profile and profile.relevant_internship %}checked{% endif %}
+                            >
+
+                            Relevant internship
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PLACEMENT PREPARATION -->
+
+                <div class="section">
+
+                    <div class="section-title">
+                        Placement Preparation
+                    </div>
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+
+                            <label for="job_applications">
+                                Job Applications
+                            </label>
+
+                            <select
+                                id="job_applications"
+                                name="job_applications"
+                            >
+
+                                <option value="">
+                                    Select
+                                </option>
+
+                                <option
+                                    value="Never"
+                                    {% if profile and profile.job_applications == "Never" %}selected{% endif %}
+                                >
+                                    Never
+                                </option>
+
+                                <option
+                                    value="Occasionally"
+                                    {% if profile and profile.job_applications == "Occasionally" %}selected{% endif %}
+                                >
+                                    Occasionally
+                                </option>
+
+                                <option
+                                    value="Regularly"
+                                    {% if profile and profile.job_applications == "Regularly" %}selected{% endif %}
+                                >
+                                    Regularly
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="interview_preparation">
+                                Interview Preparation
+                            </label>
+
+                            <select
+                                id="interview_preparation"
+                                name="interview_preparation"
+                            >
+
+                                <option value="">
+                                    Select
+                                </option>
+
+                                <option value="Not Started"
+                                    {% if profile and profile.interview_preparation == "Not Started" %}selected{% endif %}
+                                >
+                                    Not Started
+                                </option>
+
+                                <option value="Basic"
+                                    {% if profile and profile.interview_preparation == "Basic" %}selected{% endif %}
+                                >
+                                    Basic
+                                </option>
+
+                                <option value="Moderate"
+                                    {% if profile and profile.interview_preparation == "Moderate" %}selected{% endif %}
+                                >
+                                    Moderate
+                                </option>
+
+                                <option value="Strong"
+                                    {% if profile and profile.interview_preparation == "Strong" %}selected{% endif %}
+                                >
+                                    Strong
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="checkbox-group">
+
+                        <label class="checkbox-item">
+
+                            <input
+                                type="checkbox"
+                                name="has_resume"
+                                {% if profile and profile.has_resume %}checked{% endif %}
+                            >
+
+                            I have a resume
+
+                        </label>
+
+
+                        <label class="checkbox-item">
+
+                            <input
+                                type="checkbox"
+                                name="resume_optimized"
+                                {% if profile and profile.resume_optimized %}checked{% endif %}
+                            >
+
+                            Resume is optimized
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- APTITUDE & COMMUNICATION -->
+
+                <div class="section">
+
+                    <div class="section-title">
+                        Aptitude & Communication
+                    </div>
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+
+                            <label for="aptitude_practice">
+                                Aptitude Practice
+                            </label>
+
+                            <select
+                                id="aptitude_practice"
+                                name="aptitude_practice"
+                            >
+
+                                <option value="">
+                                    Select
+                                </option>
+
+                                <option value="None"
+                                    {% if profile and profile.aptitude_practice == "None" %}selected{% endif %}
+                                >
+                                    None
+                                </option>
+
+                                <option value="Beginner"
+                                    {% if profile and profile.aptitude_practice == "Beginner" %}selected{% endif %}
+                                >
+                                    Beginner
+                                </option>
+
+                                <option value="Moderate"
+                                    {% if profile and profile.aptitude_practice == "Moderate" %}selected{% endif %}
+                                >
+                                    Moderate
+                                </option>
+
+                                <option value="Strong"
+                                    {% if profile and profile.aptitude_practice == "Strong" %}selected{% endif %}
+                                >
+                                    Strong
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="communication_confidence">
+                                Communication Confidence
+                            </label>
+
+                            <select
+                                id="communication_confidence"
+                                name="communication_confidence"
+                            >
+
+                                <option value="">
+                                    Select
+                                </option>
+
+                                <option value="Low"
+                                    {% if profile and profile.communication_confidence == "Low" %}selected{% endif %}
+                                >
+                                    Low
+                                </option>
+
+                                <option value="Moderate"
+                                    {% if profile and profile.communication_confidence == "Moderate" %}selected{% endif %}
+                                >
+                                    Moderate
+                                </option>
+
+                                <option value="High"
+                                    {% if profile and profile.communication_confidence == "High" %}selected{% endif %}
+                                >
+                                    High
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="button-container">
+
+                    <button
+                        type="submit"
+                        class="save-button"
+                    >
+                        Save Profile
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>

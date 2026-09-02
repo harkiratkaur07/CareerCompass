@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>CareerCompass - Assessment</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #0f172a;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .navbar {
+            height: 86px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 7%;
+        }
+
+        .brand {
+            font-size: 30px;
+            font-weight: 700;
+            color: #2864e8;
+        }
+
+        .nav-title {
+            color: #64748b;
+            font-size: 15px;
+        }
+
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+
+        .page-container {
+            width: 90%;
+            max-width: 900px;
+
+            margin: 45px auto 60px;
+        }
+
+
+        /* =========================
+           PAGE INTRO
+        ========================= */
+
+        .page-intro {
+            margin-bottom: 28px;
+        }
+
+        .page-intro h1 {
+            margin: 0 0 8px;
+
+            font-size: 32px;
+            color: #0f172a;
+        }
+
+        .page-intro p {
+            margin: 0;
+
+            color: #64748b;
+            font-size: 16px;
+        }
+
+
+        /* =========================
+           PROGRESS CARD
+        ========================= */
+
+        .progress-card {
+            background: white;
+
+            padding: 22px 25px;
+
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+
+            margin-bottom: 22px;
+        }
+
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 12px;
+        }
+
+        .progress-label {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .progress-number {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2864e8;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 9px;
+
+            background: #e2e8f0;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+
+            background: #2864e8;
+
+            border-radius: 20px;
+
+            transition: width 0.3s ease;
+        }
+
+
+        /* =========================
+           QUESTION CARD
+        ========================= */
+
+        .question-card {
+            background: white;
+
+            padding: 35px;
+
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+
+            box-shadow: 0 5px 18px rgba(15, 23, 42, 0.06);
+        }
+
+        .question-number {
+            display: inline-block;
+
+            padding: 7px 12px;
+
+            background: #eef4ff;
+            color: #2864e8;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            margin-bottom: 18px;
+        }
+
+        .question-text {
+            font-size: 22px;
+            line-height: 1.5;
+
+            margin: 0 0 28px;
+
+            color: #0f172a;
+        }
+
+
+        /* =========================
+           OPTIONS
+        ========================= */
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+
+            width: 100%;
+
+            padding: 17px 20px;
+
+            border: 1px solid #dbe2ea;
+
+            border-radius: 10px;
+
+            background: #ffffff;
+
+            cursor: pointer;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .option-label:hover {
+            border-color: #2864e8;
+            background: #f8faff;
+
+            transform: translateY(-1px);
+        }
+
+        .option-label.selected {
+            border-color: #2864e8;
+            background: #eef4ff;
+
+            box-shadow: 0 0 0 2px rgba(40, 100, 232, 0.08);
+        }
+
+        .option-radio {
+            width: 18px;
+            height: 18px;
+
+            margin-right: 14px;
+
+            accent-color: #2864e8;
+
+            flex-shrink: 0;
+        }
+
+        .option-letter {
+            font-weight: 700;
+            color: #2864e8;
+
+            margin-right: 8px;
+        }
+
+        .option-text {
+            color: #334155;
+            font-size: 16px;
+            line-height: 1.4;
+        }
+
+
+        /* =========================
+           ERROR MESSAGE
+        ========================= */
+
+        .error-message {
+            margin-top: 20px;
+
+            padding: 12px 15px;
+
+            background: #fff1f2;
+            border: 1px solid #fecdd3;
+
+            color: #be123c;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           ACTION AREA
+        ========================= */
+
+        .action-area {
+            display: flex;
+            justify-content: space-between;
+            align-items:center;
+            gap: 15px;
+            margin-top: 30px;
+
+            padding-top: 25px;
+
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .submit-button {
+            border: none;
+
+            background: #2864e8;
+            color: white;
+
+            padding: 13px 25px;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .submit-button:hover {
+            background: #1d4ed8;
+
+            transform: translateY(-1px);
+
+            box-shadow: 0 5px 12px rgba(40, 100, 232, 0.2);
+        }
+
+        .back-button {
+            border: 1px solid #dbe2ea;
+            background: white;
+            color: #475569;
+
+            padding: 13px 20px;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+            font-weight: 600;
+
+            text-decoration: none;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .back-button:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            color: #0f172a;
+            transform: translateY(-1px);
+        }
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                padding: 0 5%;
+                height: 72px;
+            }
+
+            .brand {
+                font-size: 24px;
+            }
+
+            .nav-title {
+                display: none;
+            }
+
+            .page-container {
+                width: 92%;
+                margin-top: 30px;
+            }
+
+            .page-intro h1 {
+                font-size: 27px;
+            }
+
+            .question-card {
+                padding: 23px;
+            }
+
+            .question-text {
+                font-size: 19px;
+            }
+
+            .option-label {
+                padding: 15px;
+            }
+
+            .action-area {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .back-button{
+                width: 100%;
+                text-align: center;
+            }
+            .submit-button {
+                width: 100%;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <header class="navbar">
+
+        <div class="brand">
+            CareerCompass
+        </div>
+
+        <div class="nav-title">
+            Placement Readiness Assessment
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+
+    <main class="page-container">
+
+
+        <!-- INTRO -->
+
+        <div class="page-intro">
+
+            <h1>
+                Placement Readiness Assessment 🎯
+            </h1>
+
+            <p>
+                Answer each question carefully to evaluate your current skills.
+            </p>
+
+        </div>
+
+
+        <!-- =========================
+             PROGRESS
+        ========================= -->
+
+        <div class="progress-card">
+
+            <div class="progress-top">
+
+                <span class="progress-label">
+                    Assessment Progress
+                </span>
+
+                <span class="progress-number">
+
+                    Question
+                    {{ question_number }}
+                    of
+                    {{ total_questions }}
+
+                </span>
+
+            </div>
+
+
+            <div class="progress-bar">
+
+                <div
+                    class="progress-fill"
+                    style="width: {{ ((question_number / total_questions) * 100)|round(0) }}%;"
+                >
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             QUESTION
+        ========================= -->
+
+        <div class="question-card">
+
+            <div class="question-number">
+
+                Question {{ question_number }}
+
+            </div>
+
+
+            <h2 class="question-text">
+
+                {{ question.question_text }}
+
+            </h2>
+
+
+            <form
+                method="POST"
+                onsubmit="return validateAnswer();"
+            >
+
+
+                <div class="options">
+
+                    {% for option in options %}
+
+                        <label
+                            class="option-label"
+                            onclick="selectOption(this);"
+                        >
+
+                            <input
+                                class="option-radio"
+                                type="radio"
+                                name="answer"
+                                value="{{ option.option_label }}"
+                            >
+
+                            <span class="option-letter">
+                                {{ option.option_label }}.
+                            </span>
+
+                            <span class="option-text">
+                                {{ option.option_text }}
+                            </span>
+
+                        </label>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <!-- ERROR -->
+
+                {% if error %}
+
+                    <div class="error-message">
+
+                        {{ error }}
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- SUBMIT -->
+
+                <div class="action-area">
+                    <a href="{{url_for('auth.dashboard')}}"
+                    class="back-button">
+                 ← Back to Dashboard </a>
+
+                    <button
+                        type="submit"
+                        class="submit-button"
+                    >
+
+                        Submit Answer →
+
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+
+    </main>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+
+    <script>
+
+        function selectOption(selectedLabel) {
+
+            const allOptions =
+                document.querySelectorAll(".option-label");
+
+            allOptions.forEach(function(option) {
+
+                option.classList.remove("selected");
+
+            });
+
+            selectedLabel.classList.add("selected");
+
+        }
+
+
+        function validateAnswer() {
+
+            const selectedOption =
+                document.querySelector(
+                    'input[name="answer"]:checked'
+                );
+
+            if (!selectedOption) {
+
+                alert(
+                    "Please select an answer before continuing."
+                );
+
+                return false;
+
+            }
+
+            return true;
+
+        }
+
+    </script>
+
+
+</body>
+</html>
